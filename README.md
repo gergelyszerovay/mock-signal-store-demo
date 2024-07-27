@@ -6,13 +6,14 @@
 This `@ngrx/signals/testing` implementation is assertation library independent:
 
 - The component test with Jest assertations are [here](https://github.com/gergelyszerovay/mock-signal-store-demo/blob/main/projects/mock-signal-store-demo-app/src/app/article-list-ngrx-signal-store/jest.spec.ts])
-- The component test with Jest assertations are [here](https://github.com/gergelyszerovay/mock-signal-store-demo/blob/main/projects/mock-signal-store-demo-app/src/app/article-list-ngrx-signal-store/sinon.spec.ts)
+- The component test with Sinon assertations are [here](https://github.com/gergelyszerovay/mock-signal-store-demo/blob/main/projects/mock-signal-store-demo-app/src/app/article-list-ngrx-signal-store/sinon.spec.ts)
 
 This version of `provideMockSignalStore`:
 
 - is assertation library independent
 - contains a mock injector which mocks the services injected into the mocked store
 - prevents the execution of the mocked store's lifecyce hooks
+- makes the SignalStore's state unprotected
 
 ##### Parameters for `provideMockSignalStore`
 
