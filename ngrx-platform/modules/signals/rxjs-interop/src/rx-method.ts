@@ -10,10 +10,8 @@ import {
 } from '@angular/core';
 import { isObservable, noop, Observable, Subject, Unsubscribable } from 'rxjs';
 
-type RxMethodInput<Input> = Input | Observable<Input> | Signal<Input>;
-
 export type RxMethod<Input> = ((
-  input: RxMethodInput<Input>
+  input: Input | Signal<Input> | Observable<Input>
 ) => Unsubscribable) &
   Unsubscribable;
 
@@ -32,7 +30,7 @@ export function rxMethod<Input>(
   const sourceSub = generator(source$).subscribe();
   destroyRef.onDestroy(() => sourceSub.unsubscribe());
 
-  const rxMethodFn = (input: RxMethodInput<Input>) => {
+  const rxMethodFn = (input: Input | Signal<Input> | Observable<Input>) => {
     if (isSignal(input)) {
       const watcher = effect(
         () => {

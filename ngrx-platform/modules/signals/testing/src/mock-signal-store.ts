@@ -1,6 +1,5 @@
 import {
   Provider,
-  ProviderToken,
   Signal,
   WritableSignal,
   isSignal,
@@ -133,7 +132,6 @@ class MockInjector extends Injector {
  *
  * ```typescript
  * // component:
- *
  * export const ArticleListSignalStore = signalStore(
  *   withState<ArticleListState>(initialArticleListState),
  *   withComputed(({ articlesCount, pageSize }) => ({
@@ -142,6 +140,17 @@ class MockInjector extends Injector {
  *   withComputed(({ selectedPage, totalPages }) => ({
  *     pagination: computed(() => ({ selectedPage: selectedPage(), totalPages: totalPages() })),
  *   })),
+ *   withMethods((store) => ({
+ *     setSelectedPage(selectedPage: string | number | undefined): void {
+ *       // ...
+ *     },
+ *     loadArticles: rxMethod<void>(
+ *       pipe(
+ *         // ...
+ *       )
+ *     ),
+ *   })),
+ *
  *   // ...
  * );
  *
@@ -153,9 +162,9 @@ class MockInjector extends Injector {
  *
  * // test:
  *
- * // we have to use UnwrapProvider<T> to get the real type of a SignalStore
- * let store: UnwrapProvider<typeof ArticleListSignalStore>;
- * let mockStore: MockSignalStore<typeof store>;
+ * // we have to use InstanceType<T> to get the real type of a SignalStore
+ * // https://ngrx.io/guide/signals/faq
+ * let store: InstanceType<typeof ArticleListSignalStore>;
  *
  * await TestBed.configureTestingModule({
  *   imports: [
@@ -170,6 +179,11 @@ class MockInjector extends Injector {
  *       providers: [ // override the component level providers
  *         MockProvider(ArticlesService), // injected in ArticleListSignalStore
  *         provideMockSignalStore(ArticleListSignalStore, {
+ *           // You can use Jest spies
+ *           getSpyFn: () => jest.fn(),
+ *           // Or Sinion spies
+ *           // getSpyFn: () => fake<T>(), // <= sinon.fake
+ *
  *           // if mockComputedSignals is enabled (default),
  *           // you must provide an initial value for each computed signals
  *           initialComputedValues: {
@@ -183,8 +197,30 @@ class MockInjector extends Injector {
  * )
  * .compileComponents();
  *
- * store = component.store;
- * mockStore = asMockSignalStore(store);
+ * // ...
+ *
+ * // some helper functions
+ *
+ * function asSpy<TArgs extends any[] = any[], TReturnValue = any>(
+ *   fn: (...x: TArgs) => TReturnValue
+ * ): jest.Mock<TReturnValue, TArgs, any> {
+ *   return fn as unknown as jest.Mock<TReturnValue, TArgs, any>;
+ * }
+ *
+ * function getCallCount<TArgs extends readonly any[] = any[], TReturnValue = any>(
+ *   fn: (...x: TArgs) => TReturnValue
+ * ): number {
+ *   return asSpy(fn).mock.calls.length;
+ * }
+ *
+ * export function getRxMethodSpy<T>(rxMethod: RxMethod<T>) {
+ *   return asSpy(asFakeRxMethod(rxMethod)[FAKE_RX_METHOD]);
+ * }
+ *
+ * // Jest assertation examples:
+ *
+ * expect(getCallCount(asSpy(store.setSelectedPage))).toBe(1);
+ * expect(getCallCount(getRxMethodSpy(store.loadArticles))).toBe(1);
  *
  * ```
  */
