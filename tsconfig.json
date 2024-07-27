@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "importHelpers": true,
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitOverride": true,
+    "useDefineForClassFields": false,
+    "lib": ["ES2022", "dom"],
+    "outDir": "../out-tsc/app",
+    "target": "ES2022",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "strict": true,
+    "paths": {
+      "@example-app/*": ["./projects/example-app/src/app/*"],
+      "@ngrx/operators": ["./ngrx-platform/modules/operators"],
+      "@ngrx/signals": ["./ngrx-platform/modules/signals"],
+      "@ngrx/signals/entities": ["./ngrx-platform/modules/signals/entities"],
+      "@ngrx/signals/rxjs-interop": [
+        "./ngrx-platform/modules/signals/rxjs-interop"
+      ],
+      "@ngrx/signals/schematics-core": [
+        "./ngrx-platform/modules/signals/schematics-core"
+      ],
+      "@ngrx/signals/testing": ["./ngrx-platform/modules/signals/testing"]
+    },
+    "typeRoots": ["node_modules/@types"]
+  },
+  "exclude": [
+    "./ngrx-platform/node_modules",
+    "dist",
+    "node_modules",
+    "**/*/node_modules",
+    "modules/schematics/src/*/files/**/*"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  },
+  "bazelOptions": {
+    "suppressTsconfigOverrideWarnings": true
+  }
+}

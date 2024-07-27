@@ -1,0 +1,93 @@
+{
+  "name": "mock-signal-store-demo-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {
+    "@nx/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "projects/mock-signal-store-demo-app/src",
+  "prefix": "ngrx",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/projects/mock-signal-store-demo-app",
+        "index": "projects/mock-signal-store-demo-app/src/index.html",
+        "main": "projects/mock-signal-store-demo-app/src/main.ts",
+        "polyfills": "projects/mock-signal-store-demo-app/src/polyfills.ts",
+        "tsConfig": "projects/mock-signal-store-demo-app/tsconfig.app.json",
+        "assets": [
+          "projects/mock-signal-store-demo-app/src/favicon.ico",
+          "projects/mock-signal-store-demo-app/src/assets"
+        ],
+        "styles": ["projects/mock-signal-store-demo-app/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "mock-signal-store-demo-app:build:production"
+        },
+        "development": {
+          "buildTarget": "mock-signal-store-demo-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "mock-signal-store-demo-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "projects/mock-signal-store-demo-app/*/**/*.ts",
+          "projects/mock-signal-store-demo-app/*/**/*.html"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "projects/mock-signal-store-demo-app/jest.config.ts",
+        "runInBand": true
+      }
+    }
+  },
+  "tags": []
+}
