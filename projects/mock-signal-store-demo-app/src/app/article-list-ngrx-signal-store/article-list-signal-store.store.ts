@@ -83,6 +83,5 @@ export const ArticleListSignalStore = signalStore(
         )
       )
     ),
-    loadArticles2: rxMethod<number>(pipe()),
   }))
 );
