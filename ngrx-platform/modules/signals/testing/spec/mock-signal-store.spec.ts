@@ -268,4 +268,33 @@ describe('mockSignalStore', () => {
           SampleService,
           provideMockSignalStore(SampleSignalStore, {
             initialComputedValues: {
-              doubleNumericValue:
+              doubleNumericValue: 20,
+              tripleNumericValue: 30,
+            },
+            initialStatePatch: {
+              object: {
+                ...initialState.object,
+                nestedObject: {
+                  ...initialState.object.nestedObject,
+                  nestedObjectValue: 40,
+                },
+              },
+            },
+          }),
+        ],
+      });
+      const store = TestBed.inject(SampleSignalStore);
+
+      expect(getState(store)).toEqual({
+        ...initialState,
+        object: {
+          ...initialState.object,
+          nestedObject: {
+            ...initialState.object.nestedObject,
+            nestedObjectValue: 40,
+          },
+        },
+      });
+    });
+  });
+});
