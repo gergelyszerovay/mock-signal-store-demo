@@ -81,5 +81,3 @@ modules/*/schematics-core/testing
 migrations.json
 .env
 .nx/**
-
-ngrx-platform
